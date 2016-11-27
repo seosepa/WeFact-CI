@@ -21,7 +21,7 @@ $autoload['libraries'] = array(
 
 Todo
 ------
-* models still need to be implemented: hosting, ssl, vps, tickets, domain contacts
+* models still need to be implemented: ssl, vps, tickets, domain contacts
 * few actions are missing from current models.
 * autoloader
 * examples are not completely up to date
