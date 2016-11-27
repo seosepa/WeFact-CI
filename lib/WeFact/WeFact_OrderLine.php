@@ -327,6 +327,29 @@ class WeFact_OrderLine
     }
 
     /**
+     * Couple the orderline to a Product
+     *
+     * Add a WefactModel to your orderline (which must be created and status set to "in bestelling")
+     * e.g. create a order with a domainname that has to be transferred with a AuthKey
+     *
+     * @param WeFact_Model $weFactModel
+     * @throws Exception
+     */
+    public function addReferencedObjectToOrderLine($weFactModel)
+    {
+        if (!method_exists($weFactModel, 'getModelName')) {
+            throw new Exception('given reference model does not appear to be a valid WeFact object');
+        }
+        if ($weFactModel->getIdentifier() == 0) {
+            throw new Exception('given reference model has not been saved yet');
+        }
+
+        $productType = $weFactModel->getModelName();
+        $this->setProductType($productType);
+        $this->setReference($weFactModel->getIdentifier());
+    }
+
+    /**
      * @param array $array
      * @return WeFact_OrderLine|null
      */
