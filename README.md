@@ -32,8 +32,8 @@ i will continue adding these as i go along with my own use for weFact. PR's are 
 Tested working with
 ------
 * Codeigniter 3
-* WeFact Hosting API version 2.3
-* PHP version 5.4 - Debian
+* WeFact Hosting API version 2.5
+* PHP version 5.6 - Debian
 
 Author
 -------
