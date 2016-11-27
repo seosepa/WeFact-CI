@@ -1602,10 +1602,10 @@ class WeFact_Debtor extends WeFact_Model
     }
 
     /**
-     * override default, because we want to know to password in order to check it against self bcrypt encrypted hash
+     * override default, because we want to know to password in order to check it against self encrypted hash
      *
      * @param  int $objectCode
-     * @return WeFact_Model
+     * @return WeFact_Debtor
      */
     public static function getByCode($objectCode)
     {
