@@ -31,6 +31,8 @@ class WeFact_Hosting extends WeFact_Model
     protected $Server = 0;
 
     /**
+     * This can be acquired in WeFact_Product
+     *
      * @var int $Package
      */
     protected $Package = 0;
@@ -252,6 +254,31 @@ class WeFact_Hosting extends WeFact_Model
     }
 
     /**
+     * find all hosting for a product package
+     *
+     * @param int $packageId
+     * @throws Exception
+     * @return WeFact_Hosting[]
+     */
+    public static function findByPackageId($packageId)
+    {
+        $api        = new WeFact_Api();
+        $parameters = array(
+            'searchat'  => 'Package',
+            'searchfor' => $packageId,
+        );
+        $response   = $api->sendRequest(self::getModelName(), 'list', $parameters);
+        $result     = array();
+        $modelNames = self::getModelName();
+        if (isset($response[$modelNames])) {
+            foreach ($response[$modelNames] as $objectArray) {
+                $result[] = self::arrayToObject($objectArray);
+            }
+        }
+        return $result;
+    }
+
+    /**
      * override default, because we want to know to password
      *
      * @param  int $objectCode
@@ -331,7 +358,7 @@ class WeFact_Hosting extends WeFact_Model
     }
 
     /**
-     * @param string $date 2016-09-01T12:00:00+02:00 <optional>
+     * @param string $date   2016-09-01T12:00:00+02:00 <optional>
      * @param string $reason <optional>
      * @throws Exception
      * @return bool
@@ -349,7 +376,7 @@ class WeFact_Hosting extends WeFact_Model
             $parameters['Reason'] = $reason;
         }
 
-        $response   = self::sendRequest(self::getModelName(), 'terminate', $parameters);
+        $response = self::sendRequest(self::getModelName(), 'terminate', $parameters);
 
         if (isset($response['status']) == false) {
             return false;

@@ -422,4 +422,24 @@ class WeFact_Product extends WeFact_Model
         }
         return $result;
     }
+
+    /**
+     * Returns all ProductType Models with this packageId|SSLTypeID
+     *
+     * @throws Exception
+     * @return WeFact_Model[]
+     */
+    public function findAllModelsForThisProductTypeAndPackage()
+    {
+        $class = "WeFact_" . ucfirst($this->getProductType());
+        if (!class_exists($class)) {
+            throw new Exception("class[={$class}] for productType {$this->getProductType()} does not exist");
+        }
+        if (!method_exists($class,'findByPackageId')) {
+            throw new Exception("class[={$class}] does not have a packageId search function");
+        }
+
+        /** @var WeFact_Ssl|WeFact_Hosting $class */
+        return $class::findByPackageId($this->getPackageID());
+    }
 }

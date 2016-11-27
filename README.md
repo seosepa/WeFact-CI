@@ -2,9 +2,9 @@ WeFact API implementation for CodeIgniter
 ==============
 PHP wrapper for using the WeFact API in an object oriented way.
 This library enables you to use WeFact in CodeIgniter, also a refactor to (in my opinion)
-more object oriented way of using the weFact API.
+more object oriented way of using the WeFact API.
 
-this repo originally started as a fork from phpWeFact: https://github.com/seosepa/phpWeFact
+this repo originally started as a fork from phpWeFact: https://github.com/Qaraqter/phpWeFact
 
 Usage
 ------
@@ -21,12 +21,12 @@ $autoload['libraries'] = array(
 
 Todo
 ------
-* models still need to be implemented: ssl, vps, tickets, domain contacts
+* models/controllers still need to be implemented: vps, tickets, service, pricequote
 * few actions are missing from current models.
 * autoloader
 * examples are not completely up to date
 
-i will continue adding these as i go along with my own use for weFact. PR's are welcome, as long as you use the same codestyle
+i will continue adding these as i go along with my own use for WeFact. PR's are welcome, as long as you use the same codestyle
 
 
 Tested working with

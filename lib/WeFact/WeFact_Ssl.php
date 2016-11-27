@@ -26,6 +26,8 @@ class WeFact_Ssl extends WeFact_Model
     protected $Registrar = 0;
 
     /**
+     * This can be acquired in WeFact_Product, is package
+     *
      * @var int $SSLTypeID
      */
     protected $SSLTypeID = 0;
@@ -570,6 +572,31 @@ class WeFact_Ssl extends WeFact_Model
     {
         $api        = new WeFact_Api();
         $parameters = array();
+        $response   = $api->sendRequest(self::getModelName(), 'list', $parameters);
+        $result     = array();
+        $modelNames = self::getModelName();
+        if (isset($response[$modelNames])) {
+            foreach ($response[$modelNames] as $objectArray) {
+                $result[] = self::arrayToObject($objectArray);
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * find all ssl for a product package (SSLTypeID)
+     *
+     * @param int $SSLTypeID (PackageId)
+     * @throws Exception
+     * @return WeFact_Hosting[]
+     */
+    public static function findByPackageId($SSLTypeID)
+    {
+        $api        = new WeFact_Api();
+        $parameters = array(
+            'searchat'  => 'SSLTypeID',
+            'searchfor' => $SSLTypeID,
+        );
         $response   = $api->sendRequest(self::getModelName(), 'list', $parameters);
         $result     = array();
         $modelNames = self::getModelName();

@@ -34,6 +34,7 @@ class WeFact_Domain extends WeFact_Model
      * @var int $Status
      */
     protected $Status = 0;
+
     /**
      * @var string $RegistrationDate Date
      */
