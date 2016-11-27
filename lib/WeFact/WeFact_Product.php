@@ -424,6 +424,23 @@ class WeFact_Product extends WeFact_Model
     }
 
     /**
+     * Easy quick get packageId/SSLTypeID when creating a SSL/Hosting object
+     *
+     * @param string $productCode
+     * @throws Exception
+     * @return int
+     */
+    public static function getPackageIdForProductCode($productCode)
+    {
+        /** @var WeFact_Product $product */
+        $product = self::getByCode($productCode);
+        if ($product == null) {
+            throw new Exception("No product found for code {$productCode}");
+        }
+        return $product->getPackageID();
+    }
+
+    /**
      * Returns all ProductType Models with this packageId|SSLTypeID
      *
      * @throws Exception
