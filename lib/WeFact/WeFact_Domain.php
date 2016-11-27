@@ -491,4 +491,36 @@ class WeFact_Domain extends WeFact_Model
             return false;
         }
     }
+
+    /**
+     * Change the nameservers of this domain
+     *
+     * @param string $dns1
+     * @param string $dns2
+     * @param string $dns3
+     * @return bool
+     */
+    public function changeNameServers($dns1, $dns2, $dns3)
+    {
+        $identifier = $this->getIdentifier();
+
+        $dnsParams = array(
+            'Identifier'=> $identifier,
+            'DNS1'      => $dns1,
+            'DNS2'      => $dns2,
+            'DNS3'      => $dns3
+        );
+
+        $response = self::sendRequest('domain', 'changenameserver', $dnsParams);
+
+        if (isset($response['success']) == false) {
+            return false;
+        }
+        if (!isset($response['warning'])) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
