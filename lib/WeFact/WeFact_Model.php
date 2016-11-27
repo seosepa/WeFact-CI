@@ -107,7 +107,7 @@ class WeFact_Model extends WeFact_Api
     protected function update()
     {
         $this->checkForErrors();
-        $modelCodeName = self::getModelCodeName();
+        $modelCodeName = $this->getModelCodeName();
 
         // WeFact has the tendency to return wrong data, which give errors when you try to save it again.
         // so only save the diffs
@@ -118,7 +118,7 @@ class WeFact_Model extends WeFact_Api
         $currentData = $this->objectToArray($this);
         $savedData   = $this->objectToArray($objectClone);
 
-        $parameters                 = self::arrayDiffAssocMulti($currentData, $savedData);
+        $parameters                 = $this->arrayDiffAssocMulti($currentData, $savedData);
         $parameters[$modelCodeName] = $this->$modelCodeName;
 
         return $this->sendRequest($this->getModelName(), 'edit', $parameters);
