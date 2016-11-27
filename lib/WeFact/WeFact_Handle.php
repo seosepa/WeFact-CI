@@ -131,16 +131,6 @@ class WeFact_Handle extends WeFact_Model
     protected $updateAtRegistrar = '';
 
     /**
-     * @var string $Created
-     */
-    protected $Created = '';
-
-    /**
-     * @var string $Modified
-     */
-    protected $Modified = '';
-
-    /**
      * @return string
      */
     public function getHandle()
@@ -506,22 +496,6 @@ class WeFact_Handle extends WeFact_Model
     public function setUpdateAtRegistrar($updateAtRegistrar)
     {
         $this->updateAtRegistrar = $updateAtRegistrar;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreated()
-    {
-        return $this->Created;
-    }
-
-    /**
-     * @return string
-     */
-    public function getModified()
-    {
-        return $this->Modified;
     }
 
     /**

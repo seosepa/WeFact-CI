@@ -20,6 +20,16 @@ class WeFact_Model extends WeFact_Api
     protected $Identifier = 0;
 
     /**
+     * @var string $Created
+     */
+    protected $Created = '';
+
+    /**
+     * @var string $Modified
+     */
+    protected $Modified = '';
+
+    /**
      * The Translations for a object
      *
      * @var array
@@ -32,6 +42,22 @@ class WeFact_Model extends WeFact_Api
     public function getIdentifier()
     {
         return $this->Identifier;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreated()
+    {
+        return $this->Created;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModified()
+    {
+        return $this->Modified;
     }
 
     /**

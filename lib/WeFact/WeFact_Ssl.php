@@ -121,16 +121,6 @@ class WeFact_Ssl extends WeFact_Model
     protected $Status = '';
 
     /**
-     * @var string $Created
-     */
-    protected $Created = '';
-
-    /**
-     * @var string $Modified
-     */
-    protected $Modified = '';
-
-    /**
      * yes|no
      *
      * @var string $HasSubscription
@@ -526,22 +516,6 @@ class WeFact_Ssl extends WeFact_Model
     public function setStatus($Status)
     {
         $this->Status = $Status;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreated()
-    {
-        return $this->Created;
-    }
-
-    /**
-     * @return string
-     */
-    public function getModified()
-    {
-        return $this->Modified;
     }
 
     /**

@@ -46,16 +46,6 @@ class WeFact_Hosting extends WeFact_Model
     protected $Status = 0;
 
     /**
-     * @var string $Created <mysqldatetime>
-     */
-    protected $Created = '';
-
-    /**
-     * @var string $Modified <mysqldatetime>
-     */
-    protected $Modified = '';
-
-    /**
      * @var array $Subscription
      */
     protected $Subscription = array();

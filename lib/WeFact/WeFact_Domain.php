@@ -107,16 +107,6 @@ class WeFact_Domain extends WeFact_Model
     protected $Comment = '';
 
     /**
-     * @var string $Created
-     */
-    protected $Created = '';
-
-    /**
-     * @var string $Modified
-     */
-    protected $Modified = '';
-
-    /**
      * @var array $RegistrarInfo
      */
     protected $RegistrarInfo = array();
@@ -518,22 +508,6 @@ class WeFact_Domain extends WeFact_Model
     public function setComment($Comment)
     {
         $this->Comment = $Comment;
-    }
-
-    /**
-     * @return string
-     */
-    public function getCreated()
-    {
-        return $this->Created;
-    }
-
-    /**
-     * @return string
-     */
-    public function getModified()
-    {
-        return $this->Modified;
     }
 
     /**
