@@ -295,7 +295,7 @@ class WeFact_Domain extends WeFact_Model
     /**
      * @return int
      */
-    public function getOwnerHandle()
+    public function getOwnerHandleId()
     {
         return $this->OwnerHandle;
     }
@@ -303,15 +303,31 @@ class WeFact_Domain extends WeFact_Model
     /**
      * @param int $OwnerHandle
      */
-    public function setOwnerHandle($OwnerHandle)
+    public function setOwnerHandleId($OwnerHandle)
     {
         $this->OwnerHandle = $OwnerHandle;
     }
 
     /**
+     * @return WeFact_Handle
+     */
+    public function getOwnerHandle()
+    {
+        return WeFact_Handle::getByIdentifier($this->OwnerHandle);
+    }
+
+    /**
+     * @param WeFact_Handle $OwnerHandle
+     */
+    public function setOwnerHandle(WeFact_Handle $OwnerHandle)
+    {
+        $this->OwnerHandle = $OwnerHandle->getIdentifier();
+    }
+
+    /**
      * @return int
      */
-    public function getAdminHandle()
+    public function getAdminHandleId()
     {
         return $this->AdminHandle;
     }
@@ -319,15 +335,31 @@ class WeFact_Domain extends WeFact_Model
     /**
      * @param int $AdminHandle
      */
-    public function setAdminHandle($AdminHandle)
+    public function setAdminHandleId($AdminHandle)
     {
         $this->AdminHandle = $AdminHandle;
     }
 
     /**
+     * @return WeFact_Handle
+     */
+    public function getAdminHandle()
+    {
+        return WeFact_Handle::getByIdentifier($this->AdminHandle);
+    }
+
+    /**
+     * @param WeFact_Handle $AdminHandle
+     */
+    public function setAdminHandle(WeFact_Handle $AdminHandle)
+    {
+        $this->AdminHandle = $AdminHandle->getIdentifier();
+    }
+
+    /**
      * @return int
      */
-    public function getTechHandle()
+    public function getTechHandleId()
     {
         return $this->TechHandle;
     }
@@ -335,9 +367,25 @@ class WeFact_Domain extends WeFact_Model
     /**
      * @param int $TechHandle
      */
-    public function setTechHandle($TechHandle)
+    public function setTechHandleId($TechHandle)
     {
         $this->TechHandle = $TechHandle;
+    }
+
+    /**
+     * @return WeFact_Handle
+     */
+    public function getTechHandle()
+    {
+        return WeFact_Handle::getByIdentifier($this->TechHandle);
+    }
+
+    /**
+     * @param WeFact_Handle $TechHandle
+     */
+    public function setTechHandle(WeFact_Handle $TechHandle)
+    {
+        $this->TechHandle = $TechHandle->getIdentifier();
     }
 
     /**
@@ -426,7 +474,7 @@ class WeFact_Domain extends WeFact_Model
             'searchat'  => 'DebtorCode',
             'searchfor' => $debtorCode
         );
-        $response   = $api->sendRequest('domain', 'list', $parameters);
+        $response   = $api->sendRequest(self::getModelName(), 'list', $parameters);
         $result     = array();
 
         if (isset($response['domains'])) {
@@ -453,19 +501,13 @@ class WeFact_Domain extends WeFact_Model
             'Domain' => $domain,
             'Tld'    => $tld
         );
-        $response   = $api->sendRequest('domain', 'show', $parameters);
-        $result     = array();
+        $response   = $api->sendRequest(self::getModelName(), 'show', $parameters);
 
-        if (isset($response['domains'])) {
-            foreach ($response['domains'] as $domainArray) {
-                $domain = new self();
-                foreach ($domainArray as $field => $value) {
-                    $domain->$field = $value;
-                }
-                $result[] = $domain;
-            }
+        if (!isset($response['status']) || $response['status'] == 'error') {
+            return null;
         }
-        return $result;
+
+        return self::responseToObject($response);
     }
 
     /**
@@ -484,7 +526,7 @@ class WeFact_Domain extends WeFact_Model
             'Tld'    => $tld
         );
 
-        $response = self::sendRequest('domain', 'check', $domainParams);
+        $response = self::sendRequest(self::getModelName(), 'check', $domainParams);
 
         if (isset($response['domains'][0]['Available']) == false) {
             return null; // Domain check failed
@@ -518,7 +560,7 @@ class WeFact_Domain extends WeFact_Model
             $dnsParams['DNS3'] = $dns3;
         }
 
-        $response = self::sendRequest('domain', 'changenameserver', $dnsParams);
+        $response = self::sendRequest(self::getModelName(), 'changenameserver', $dnsParams);
 
         if (isset($response['success']) == false) {
             return false;

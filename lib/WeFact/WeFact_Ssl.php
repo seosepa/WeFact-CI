@@ -235,49 +235,97 @@ class WeFact_Ssl extends WeFact_Model
     /**
      * @return int
      */
-    public function getOwnerHandle()
+    public function getOwnerHandleId()
     {
         return $this->ownerHandle;
     }
 
     /**
-     * @param int $ownerHandle
+     * @param int $OwnerHandle
      */
-    public function setOwnerHandle($ownerHandle)
+    public function setOwnerHandleId($OwnerHandle)
     {
-        $this->ownerHandle = $ownerHandle;
+        $this->ownerHandle = $OwnerHandle;
+    }
+
+    /**
+     * @return WeFact_Handle
+     */
+    public function getOwnerHandle()
+    {
+        return WeFact_Handle::getByIdentifier($this->ownerHandle);
+    }
+
+    /**
+     * @param WeFact_Handle $OwnerHandle
+     */
+    public function setOwnerHandle(WeFact_Handle $OwnerHandle)
+    {
+        $this->ownerHandle = $OwnerHandle->getIdentifier();
     }
 
     /**
      * @return int
      */
-    public function getAdminHandle()
+    public function getAdminHandleId()
     {
         return $this->adminHandle;
     }
 
     /**
-     * @param int $adminHandle
+     * @param int $AdminHandle
      */
-    public function setAdminHandle($adminHandle)
+    public function setAdminHandleId($AdminHandle)
     {
-        $this->adminHandle = $adminHandle;
+        $this->adminHandle = $AdminHandle;
+    }
+
+    /**
+     * @return WeFact_Handle
+     */
+    public function getAdminHandle()
+    {
+        return WeFact_Handle::getByIdentifier($this->adminHandle);
+    }
+
+    /**
+     * @param WeFact_Handle $AdminHandle
+     */
+    public function setAdminHandle(WeFact_Handle $AdminHandle)
+    {
+        $this->adminHandle = $AdminHandle->getIdentifier();
     }
 
     /**
      * @return int
      */
-    public function getTechHandle()
+    public function getTechHandleId()
     {
         return $this->techHandle;
     }
 
     /**
-     * @param int $techHandle
+     * @param int $TechHandle
      */
-    public function setTechHandle($techHandle)
+    public function setTechHandleId($TechHandle)
     {
-        $this->techHandle = $techHandle;
+        $this->techHandle = $TechHandle;
+    }
+
+    /**
+     * @return WeFact_Handle
+     */
+    public function getTechHandle()
+    {
+        return WeFact_Handle::getByIdentifier($this->techHandle);
+    }
+
+    /**
+     * @param WeFact_Handle $TechHandle
+     */
+    public function setTechHandle(WeFact_Handle $TechHandle)
+    {
+        $this->techHandle = $TechHandle->getIdentifier();
     }
 
     /**
