@@ -102,6 +102,16 @@ class WeFact_InvoiceLine
     protected $StartPeriod;
 
     /**
+     * Gets the Identifier.
+     *
+     * @return int
+     */
+    public function getIdentifier()
+    {
+        return $this->Identifier;
+    }
+
+    /**
      * Gets the The date.
      *
      * @return string
@@ -381,30 +391,6 @@ class WeFact_InvoiceLine
     public function setStartPeriod($StartPeriod)
     {
         $this->StartPeriod = $StartPeriod;
-
-        return $this;
-    }
-
-    /**
-     * Gets the Identifier.
-     *
-     * @return int
-     */
-    public function getIdentifier()
-    {
-        return $this->Identifier;
-    }
-
-    /**
-     * Sets the Identifier.
-     *
-     * @param int $Identifier the identifier
-     *
-     * @return WeFact_InvoiceLine
-     */
-    public function setIdentifier($Identifier)
-    {
-        $this->Identifier = $Identifier;
 
         return $this;
     }

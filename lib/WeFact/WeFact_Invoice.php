@@ -336,22 +336,6 @@ class WeFact_Invoice extends WeFact_Model
     }
 
     /**
-     * @return array
-     */
-    public function getTranslations()
-    {
-        return $this->Translations;
-    }
-
-    /**
-     * @param array $Translations
-     */
-    public function setTranslations($Translations)
-    {
-        $this->Translations = $Translations;
-    }
-
-    /**
      * Gets the The invoice code.
      *
      * @return string

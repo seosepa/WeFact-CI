@@ -101,38 +101,6 @@ class WeFact_Domain extends WeFact_Model
     protected $HasSubscription = '';
 
     /**
-     * @return int
-     */
-    public function getIdentifier()
-    {
-        return $this->Identifier;
-    }
-
-    /**
-     * @param int $Identifier
-     */
-    public function setIdentifier($Identifier)
-    {
-        $this->Identifier = $Identifier;
-    }
-
-    /**
-     * @return array
-     */
-    public function getTranslations()
-    {
-        return $this->Translations;
-    }
-
-    /**
-     * @param array $Translations
-     */
-    public function setTranslations($Translations)
-    {
-        $this->Translations = $Translations;
-    }
-
-    /**
      * @return string
      */
     public function getDomain()

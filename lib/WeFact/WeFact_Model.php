@@ -12,6 +12,35 @@
  */
 class WeFact_Model extends WeFact_Api
 {
+    /**
+     * Common for all Objects;
+     *
+     * @var $Identifier int
+     */
+    protected $Identifier = 0;
+
+    /**
+     * The Translations for a object
+     *
+     * @var array
+     */
+    protected $Translations = array();
+
+    /**
+     * @return int
+     */
+    public function getIdentifier()
+    {
+        return $this->Identifier;
+    }
+
+    /**
+     * @return array
+     */
+    public function getTranslations()
+    {
+        return $this->Translations;
+    }
 
     /**
      * @return string

@@ -119,14 +119,6 @@ class WeFact_OrderLine
     }
 
     /**
-     * @param int $Identifier
-     */
-    public function setIdentifier($Identifier)
-    {
-        $this->Identifier = $Identifier;
-    }
-
-    /**
      * @return string
      */
     public function getDate()

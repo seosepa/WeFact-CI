@@ -6,20 +6,6 @@
 class WeFact_Api
 {
     /**
-     * Common for all Objects;
-     *
-     * @var $Identifier int
-     */
-    protected $Identifier = 0;
-
-    /**
-     * The Translations for a object
-     *
-     * @var array
-     */
-    protected $Translations = array();
-
-    /**
      * sendRequest sends the request to the WeFact API
      *
      * @param  string $controller

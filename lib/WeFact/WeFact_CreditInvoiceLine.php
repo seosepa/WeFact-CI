@@ -145,18 +145,4 @@ class WeFact_CreditInvoiceLine
     {
         return $this->Identifier;
     }
-
-    /**
-     * Sets the Identifier.
-     *
-     * @param int $Identifier the identifier
-     *
-     * @return WeFact_CreditInvoiceLine
-     */
-    public function setIdentifier($Identifier)
-    {
-        $this->Identifier = $Identifier;
-
-        return $this;
-    }
 }
