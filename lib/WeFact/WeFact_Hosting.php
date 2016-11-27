@@ -229,7 +229,89 @@ class WeFact_Hosting extends WeFact_Model
     {
         $this->ServerInfo = $ServerInfo;
     }
-    
+
+    /**
+     * Override this function, hostingObject doesn't have uniquecode
+     *
+     * @return string
+     */
+    public static function getModelCodeName()
+    {
+        return 'Username';
+    }
+
+    /**
+     * ListAll overwritten
+     * WeFact decided multiple hosting object is not consistently called hostings, like domains etc.
+     *
+     * @return WeFact_Hosting[]
+     */
+    public static function listAll()
+    {
+        $api        = new WeFact_Api();
+        $parameters = array();
+        $response   = $api->sendRequest(self::getModelName(), 'list', $parameters);
+        $result     = array();
+        $modelNames = self::getModelName();
+        if (isset($response[$modelNames])) {
+            foreach ($response[$modelNames] as $objectArray) {
+                $result[] = self::arrayToObject($objectArray);
+            }
+        }
+        return $result;
+    }
+    /**
+     * override default, because we want to know to password
+     *
+     * @param  int $objectCode
+     * @return WeFact_Hosting
+     */
+    public static function getByCode($objectCode)
+    {
+        $api = new WeFact_Api();
+        if ($objectCode == '') {
+            throw new \InvalidArgumentException(
+                sprintf('ObjectCode must be defined!')
+            );
+        }
+        $parameters = array(
+            self::getModelCodeName() => $objectCode,
+            'GetPassword'            => 'yes', // we want the password!
+        );
+        $response   = $api->sendRequest(self::getModelName(), 'show', $parameters);
+
+        if (!isset($response['status']) || $response['status'] == 'error') {
+            return null;
+        }
+
+        return self::responseToObject($response);
+    }
+
+    /**
+     * @param  string $username
+     * @return WeFact_Hosting
+     */
+    public static function getByUsername($username)
+    {
+        $api = new WeFact_Api();
+        if ($username == '') {
+            throw new \InvalidArgumentException(
+                sprintf('ObjectCode must be defined!')
+            );
+        }
+        $parameters = array(
+            'username'    => $username,
+            'GetPassword' => 'yes', // we want the password!
+        );
+        $response   = $api->sendRequest(self::getModelName(), 'show', $parameters);
+
+        if (!isset($response['status']) || $response['status'] == 'error') {
+            return null;
+        }
+
+        return self::responseToObject($response);
+    }
+
     /**
      * @param string $debtorCode
      * @throws Exception
@@ -258,22 +340,165 @@ class WeFact_Hosting extends WeFact_Model
     }
 
     /**
-     * @return bool|null
+     * @param string $date 2016-09-01T12:00:00+02:00
+     * @param string $reason
+     * @throws Exception
+     * @return bool
+     */
+    public function terminate($date, $reason)
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+            'date'       => $date,
+            'reason'     => $reason,
+        );
+        $response   = self::sendRequest('hosting', 'terminate', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @throws Exception
+     * @return bool
+     */
+    public function suspend()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+        $response   = self::sendRequest('hosting', 'suspend', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @throws Exception
+     * @return bool
+     */
+    public function unsuspend()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+        $response   = self::sendRequest('hosting', 'unsuspend', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Creates hosting account on the server
+     * Sends email to customer with credentials
+     *
+     * @throws Exception
+     * @return bool
+     */
+    public function create()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+        $response   = self::sendRequest('hosting', 'create', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Removed hosting user from server
+     *
+     * @throws Exception
+     * @return bool
+     */
+    public function removeFromServer()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+        $response   = self::sendRequest('hosting', 'removefromserver', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Removed hosting user from server
+     *
+     * @throws Exception
+     * @return array|bool list of domains
+     */
+    public function getDomainList()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+        $response   = self::sendRequest('hosting', 'getdomainlist', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        if (isset($response['hosting']['domainlist']) == false) {
+            return false;
+        }
+        return $response['hosting']['domainlist'];
+    }
+
+    /**
+     * @return bool
      */
     public function sendAccountInfoByEmail()
     {
         $parameters = array(
-            'identifier' => $this->getIdentifier()
+            'Identifier' => $this->getIdentifier()
         );
-        $response = self::sendRequest('hosting', 'sendaccountinfobyemail', $parameters);
+        $response   = self::sendRequest('hosting', 'sendaccountinfobyemail', $parameters);
 
         if (isset($response['success']) == false) {
-            return null; // Send account info failed
+            return false; // Send account info failed
         }
         if (!isset($response['warning'])) {
             return true;
         } else {
             return false;
         }
+    }
+
+    /**
+     * @todo
+     * @throws Exception
+     */
+    public function updowngrade()
+    {
+        throw new Exception('not implemented yet');
     }
 }
