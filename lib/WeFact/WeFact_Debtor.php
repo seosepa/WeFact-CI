@@ -1756,4 +1756,14 @@ class WeFact_Debtor extends WeFact_Model
         }
         return $debtor;
     }
+
+    /**
+     * Specific checks for debtor
+     */
+    public function checkForErrors()
+    {
+        if (strlen($this->getUsername()) < 4) {
+            throw new Exception("Username[={$this->$this->getUsername()}] is to short");
+        }
+    }
 }
