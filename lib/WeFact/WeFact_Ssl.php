@@ -584,6 +584,34 @@ class WeFact_Ssl extends WeFact_Model
     }
 
     /**
+     * Check if there are any errors in the model data
+     */
+    public function checkForErrors()
+    {
+        if ($this->getDebtor() == '' && $this->getDebtorCode() == '') {
+            throw new \InvalidArgumentException(
+                sprintf('Debtor or DebtorCode must be defined')
+            );
+        }
+        if ($this->getCommonName() == '') {
+            throw new \InvalidArgumentException(
+                sprintf('CommonName must be defined')
+            );
+        }
+        // is packageId of WeFact_Product
+        if ($this->getSSLTypeID() == '') {
+            throw new \InvalidArgumentException(
+                sprintf('SSLTypeId must be defined')
+            );
+        }
+        if ($this->getPeriod() == '') {
+            throw new \InvalidArgumentException(
+                sprintf('Period must be defined')
+            );
+        }
+    }
+
+    /**
      * find all ssl for a product package (SSLTypeID)
      *
      * @param int $SSLTypeID (PackageId)

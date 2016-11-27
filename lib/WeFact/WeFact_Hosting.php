@@ -254,6 +254,24 @@ class WeFact_Hosting extends WeFact_Model
     }
 
     /**
+     * Check if there are any errors in the model data
+     */
+    public function checkForErrors()
+    {
+        if ($this->getDebtor() == '' && $this->getDebtorCode() == '') {
+            throw new \InvalidArgumentException(
+                sprintf('Debtor or DebtorCode must be defined')
+            );
+        }
+        // is packageId of WeFact_Product
+        if ($this->getPackage() == '') {
+            throw new \InvalidArgumentException(
+                sprintf('Package must be defined')
+            );
+        }
+    }
+
+    /**
      * find all hosting for a product package
      *
      * @param int $packageId
