@@ -34,12 +34,6 @@ class WeFact_Domain extends WeFact_Model
      * @var int $Status
      */
     protected $Status = 0;
-
-    /**
-     * @var array $Subscription
-     */
-    protected $Subscription = array();
-
     /**
      * @var string $RegistrationDate Date
      */
@@ -66,6 +60,26 @@ class WeFact_Domain extends WeFact_Model
     protected $DNS3 = '';
 
     /**
+     * @var string $DNS1IP
+     */
+    protected $DNS1IP = '';
+
+    /**
+     * @var string $DNS2IP
+     */
+    protected $DNS2IP = '';
+
+    /**
+     * @var string $DNS3IP
+     */
+    protected $DNS3IP = '';
+
+    /**
+     * @var int $DNSTemplate
+     */
+    protected $DNSTemplate = 0;
+
+    /**
      * @var int $OwnerHandle
      */
     protected $OwnerHandle = 0;
@@ -79,6 +93,33 @@ class WeFact_Domain extends WeFact_Model
      * @var int $TechHandle
      */
     protected $TechHandle = 0;
+
+    /**
+     * on|off
+     *
+     * @var string $DomainAutoRenew
+     */
+    protected $DomainAutoRenew = '';
+
+    /**
+     * @var string $Comment
+     */
+    protected $Comment = '';
+
+    /**
+     * @var string $Created
+     */
+    protected $Created = '';
+
+    /**
+     * @var string $Modified
+     */
+    protected $Modified = '';
+
+    /**
+     * @var array $RegistrarInfo
+     */
+    protected $RegistrarInfo = array();
 
     /**
      * @var string $DirectServerCreation ENUM  'yes' of 'no'
@@ -99,6 +140,17 @@ class WeFact_Domain extends WeFact_Model
      * @var string $HasSubscription yes | no
      */
     protected $HasSubscription = '';
+
+    /**
+     * @var array $Subscription
+     */
+    protected $Subscription = array();
+
+    /**
+     * @var array $NameserversManager
+     */
+    protected $NameserversManager = array();
+
 
     /**
      * @return string
@@ -197,22 +249,6 @@ class WeFact_Domain extends WeFact_Model
     }
 
     /**
-     * @return array
-     */
-    public function getSubscription()
-    {
-        return $this->Subscription;
-    }
-
-    /**
-     * @param array $Subscription
-     */
-    public function setSubscription($Subscription)
-    {
-        $this->Subscription = $Subscription;
-    }
-
-    /**
      * @return string
      */
     public function getRegistrationDate()
@@ -290,6 +326,70 @@ class WeFact_Domain extends WeFact_Model
     public function setDNS3($DNS3)
     {
         $this->DNS3 = $DNS3;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDNS1IP()
+    {
+        return $this->DNS1IP;
+    }
+
+    /**
+     * @param string $DNS1IP
+     */
+    public function setDNS1IP($DNS1IP)
+    {
+        $this->DNS1IP = $DNS1IP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDNS2IP()
+    {
+        return $this->DNS2IP;
+    }
+
+    /**
+     * @param string $DNS2IP
+     */
+    public function setDNS2IP($DNS2IP)
+    {
+        $this->DNS2IP = $DNS2IP;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDNS3IP()
+    {
+        return $this->DNS3IP;
+    }
+
+    /**
+     * @param string $DNS3IP
+     */
+    public function setDNS3IP($DNS3IP)
+    {
+        $this->DNS3IP = $DNS3IP;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDNSTemplate()
+    {
+        return $this->DNSTemplate;
+    }
+
+    /**
+     * @param int $DNSTemplate
+     */
+    public function setDNSTemplate($DNSTemplate)
+    {
+        $this->DNSTemplate = $DNSTemplate;
     }
 
     /**
@@ -391,12 +491,70 @@ class WeFact_Domain extends WeFact_Model
     /**
      * @return string
      */
+    public function getDomainAutoRenew()
+    {
+        return $this->DomainAutoRenew;
+    }
+
+    /**
+     * @param string $DomainAutoRenew
+     */
+    public function setDomainAutoRenew($DomainAutoRenew)
+    {
+        $this->DomainAutoRenew = $DomainAutoRenew;
+    }
+
+    /**
+     * @return string
+     */
+    public function getComment()
+    {
+        return $this->Comment;
+    }
+
+    /**
+     * @param string $Comment
+     */
+    public function setComment($Comment)
+    {
+        $this->Comment = $Comment;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreated()
+    {
+        return $this->Created;
+    }
+
+    /**
+     * @return string
+     */
+    public function getModified()
+    {
+        return $this->Modified;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegistrarInfo()
+    {
+        return $this->RegistrarInfo;
+    }
+
+    /**
+     * @return string
+     */
     public function getDirectServerCreation()
     {
         return $this->DirectServerCreation;
     }
 
     /**
+     * yes|no
+     *
      * @param string $DirectServerCreation
      */
     public function setDirectServerCreation($DirectServerCreation)
@@ -450,6 +608,30 @@ class WeFact_Domain extends WeFact_Model
     public function setHasSubscription($HasSubscription)
     {
         $this->HasSubscription = $HasSubscription;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSubscription()
+    {
+        return $this->Subscription;
+    }
+
+    /**
+     * @param array $Subscription
+     */
+    public function setSubscription($Subscription)
+    {
+        $this->Subscription = $Subscription;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNameserversManager()
+    {
+        return $this->NameserversManager;
     }
 
     /**
@@ -550,10 +732,10 @@ class WeFact_Domain extends WeFact_Model
     public function changeNameserver($dns1, $dns2, $dns3 = '')
     {
         $identifier = $this->getIdentifier();
-        $dnsParams = array(
-            'Identifier'=> $identifier,
-            'DNS1'      => $dns1,
-            'DNS2'      => $dns2,
+        $dnsParams  = array(
+            'Identifier' => $identifier,
+            'DNS1'       => $dns1,
+            'DNS2'       => $dns2,
         );
 
         if ($dns3 != '') {
