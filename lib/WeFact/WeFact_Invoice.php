@@ -1354,7 +1354,6 @@ class WeFact_Invoice extends WeFact_Model
                 sprintf('There must be at least one WeFact_InvoiceLine object in the InvoiceLines array!')
             );
         }
-        /** NOTE @ STEFAN: fix better checkes for invoice lines */
     }
 
     /**

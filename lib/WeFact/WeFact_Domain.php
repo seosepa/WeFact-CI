@@ -437,11 +437,21 @@ class WeFact_Domain extends WeFact_Model
     }
 
     /**
+     * Override this function, domainObject does not have a DomainCode
+     *
+     * @return string
+     */
+    public static function getModelCodeName()
+    {
+        return 'Identifier'; // just use the plain old identifier
+    }
+
+    /**
      * @param string $debtorCode
      * @throws Exception
      * @return WeFact_Domain[]
      */
-    public static function getByDebtorCode($debtorCode)
+    public static function findByDebtorCode($debtorCode)
     {
         $api        = new WeFact_Api();
         $parameters = array(
@@ -449,6 +459,33 @@ class WeFact_Domain extends WeFact_Model
             'searchfor' => $debtorCode
         );
         $response   = $api->sendRequest('domain', 'list', $parameters);
+        $result     = array();
+
+        if (isset($response['domains'])) {
+            foreach ($response['domains'] as $domainArray) {
+                $domain = new self();
+                foreach ($domainArray as $field => $value) {
+                    $domain->$field = $value;
+                }
+                $result[] = $domain;
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * @param string $domain
+     * @param string $tld
+     * @return WeFact_Domain
+     */
+    public static function getByDomainTld($domain, $tld)
+    {
+        $api        = new WeFact_Api();
+        $parameters = array(
+            'Domain' => $domain,
+            'Tld'    => $tld
+        );
+        $response   = $api->sendRequest('domain', 'show', $parameters);
         $result     = array();
 
         if (isset($response['domains'])) {
@@ -497,30 +534,31 @@ class WeFact_Domain extends WeFact_Model
      *
      * @param string $dns1
      * @param string $dns2
-     * @param string $dns3
+     * @param string $dns3 <optional>
      * @return bool
      */
-    public function changeNameServers($dns1, $dns2, $dns3)
+    public function changeNameserver($dns1, $dns2, $dns3 = '')
     {
         $identifier = $this->getIdentifier();
-
         $dnsParams = array(
             'Identifier'=> $identifier,
             'DNS1'      => $dns1,
             'DNS2'      => $dns2,
-            'DNS3'      => $dns3
         );
+
+        if ($dns3 != '') {
+            $dnsParams['DNS3'] = $dns3;
+        }
 
         $response = self::sendRequest('domain', 'changenameserver', $dnsParams);
 
         if (isset($response['success']) == false) {
             return false;
         }
-        if (!isset($response['warning'])) {
+        if (isset($response['warning']) == false) {
             return true;
-        } else {
-            return false;
         }
+        return false;
     }
 
 }
