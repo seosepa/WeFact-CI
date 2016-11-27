@@ -92,7 +92,7 @@ class WeFact_Model extends WeFact_Api
         $currentData = $this->objectToArray($this);
         $savedData   = $this->objectToArray($objectClone);
 
-        $parameters                            = self::arrayDiffAssocMulti($currentData, $savedData);
+        $parameters                 = self::arrayDiffAssocMulti($currentData, $savedData);
         $parameters[$modelCodeName] = $this->$modelCodeName;
 
         return $this->sendRequest($this->getModelName(), 'edit', $parameters);
@@ -126,9 +126,8 @@ class WeFact_Model extends WeFact_Api
      */
     public function save()
     {
-        $modelCodeName = $this->getModelCodeName();
         // Check if update or insert
-        if ($this->$modelCodeName == '') {
+        if ($this->getIdentifier() == '') {
             $response = $this->insert();
         } else {
             $response = $this->update();
@@ -157,15 +156,14 @@ class WeFact_Model extends WeFact_Api
      */
     public function remove()
     {
-        $modelCodeName = $this->getModelCodeName();
-        if ($this->$modelCodeName == '') {
+        if ($this->getIdentifier() == '') {
             throw new \InvalidArgumentException(
-                sprintf('ObjectCode must be defined!')
+                sprintf('Identifier must be defined!')
             );
         }
 
         $parameters = array(
-            $modelCodeName => $this->$modelCodeName,
+            'Identifier' => $this->getIdentifier(),
         );
         $response   = $this->sendRequest($this->getModelName(), 'delete', $parameters);
 
@@ -282,12 +280,11 @@ class WeFact_Model extends WeFact_Api
      */
     public function renew()
     {
-        $modelName = self::getModelCodeName();
-        $newObject = $this->getByCode($this->$modelName);
+        $newObject = $this->getByIdentifier($this->getIdentifier());
 
         if ($newObject == null) {
             $calledClass = get_called_class();
-            Throw new Exception("{$calledClass}[Code={$this->$modelName}] does not exists in WeFact");
+            Throw new Exception("{$calledClass}[Identifier={$this->getIdentifier()}] does not exists in WeFact");
         }
 
         $newInformation = get_object_vars($newObject);
@@ -363,7 +360,7 @@ class WeFact_Model extends WeFact_Api
             }
         }
 
-        $resultArray = array_diff_assoc($array1,$array2);
+        $resultArray = array_diff_assoc($array1, $array2);
 
 
         foreach ($resultArray as $key => $value) {
