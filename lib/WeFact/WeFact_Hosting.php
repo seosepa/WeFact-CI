@@ -231,7 +231,7 @@ class WeFact_Hosting extends WeFact_Model
     }
 
     /**
-     * Override this function, hostingObject doesn't have uniquecode
+     * Override this function, hostingObject doesn't have default uniquecode
      *
      * @return string
      */
@@ -260,6 +260,7 @@ class WeFact_Hosting extends WeFact_Model
         }
         return $result;
     }
+
     /**
      * override default, because we want to know to password
      *
@@ -324,7 +325,7 @@ class WeFact_Hosting extends WeFact_Model
             'searchat'  => 'DebtorCode',
             'searchfor' => $debtorCode
         );
-        $response   = $api->sendRequest('hosting', 'list', $parameters);
+        $response   = $api->sendRequest(self::getModelName(), 'list', $parameters);
         $result     = array();
 
         if (isset($response['hosting'])) {
@@ -341,18 +342,24 @@ class WeFact_Hosting extends WeFact_Model
 
     /**
      * @param string $date 2016-09-01T12:00:00+02:00
-     * @param string $reason
+     * @param string $reason <optional>
      * @throws Exception
      * @return bool
      */
-    public function terminate($date, $reason)
+    public function terminate($date = '', $reason = '')
     {
         $parameters = array(
             'Identifier' => $this->getIdentifier(),
-            'date'       => $date,
-            'reason'     => $reason,
         );
-        $response   = self::sendRequest('hosting', 'terminate', $parameters);
+
+        if ($date != '') {
+            $parameters['Date'] = $date;
+        }
+        if ($reason != '') {
+            $parameters['Reason'] = $reason;
+        }
+
+        $response   = self::sendRequest(self::getModelName(), 'terminate', $parameters);
 
         if (isset($response['status']) == false) {
             return false;
@@ -372,7 +379,7 @@ class WeFact_Hosting extends WeFact_Model
         $parameters = array(
             'Identifier' => $this->getIdentifier(),
         );
-        $response   = self::sendRequest('hosting', 'suspend', $parameters);
+        $response   = self::sendRequest(self::getModelName(), 'suspend', $parameters);
 
         if (isset($response['status']) == false) {
             return false;
@@ -392,7 +399,7 @@ class WeFact_Hosting extends WeFact_Model
         $parameters = array(
             'Identifier' => $this->getIdentifier(),
         );
-        $response   = self::sendRequest('hosting', 'unsuspend', $parameters);
+        $response   = self::sendRequest(self::getModelName(), 'unsuspend', $parameters);
 
         if (isset($response['status']) == false) {
             return false;
@@ -415,7 +422,7 @@ class WeFact_Hosting extends WeFact_Model
         $parameters = array(
             'Identifier' => $this->getIdentifier(),
         );
-        $response   = self::sendRequest('hosting', 'create', $parameters);
+        $response   = self::sendRequest(self::getModelName(), 'create', $parameters);
 
         if (isset($response['status']) == false) {
             return false;
@@ -437,7 +444,7 @@ class WeFact_Hosting extends WeFact_Model
         $parameters = array(
             'Identifier' => $this->getIdentifier(),
         );
-        $response   = self::sendRequest('hosting', 'removefromserver', $parameters);
+        $response   = self::sendRequest(self::getModelName(), 'removefromserver', $parameters);
 
         if (isset($response['status']) == false) {
             return false;
@@ -459,7 +466,7 @@ class WeFact_Hosting extends WeFact_Model
         $parameters = array(
             'Identifier' => $this->getIdentifier(),
         );
-        $response   = self::sendRequest('hosting', 'getdomainlist', $parameters);
+        $response   = self::sendRequest(self::getModelName(), 'getdomainlist', $parameters);
 
         if (isset($response['status']) == false) {
             return false;
@@ -481,7 +488,7 @@ class WeFact_Hosting extends WeFact_Model
         $parameters = array(
             'Identifier' => $this->getIdentifier()
         );
-        $response   = self::sendRequest('hosting', 'sendaccountinfobyemail', $parameters);
+        $response   = self::sendRequest(self::getModelName(), 'sendaccountinfobyemail', $parameters);
 
         if (isset($response['success']) == false) {
             return false; // Send account info failed
