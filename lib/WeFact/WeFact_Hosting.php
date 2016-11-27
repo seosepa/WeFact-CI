@@ -341,7 +341,7 @@ class WeFact_Hosting extends WeFact_Model
     }
 
     /**
-     * @param string $date 2016-09-01T12:00:00+02:00
+     * @param string $date 2016-09-01T12:00:00+02:00 <optional>
      * @param string $reason <optional>
      * @throws Exception
      * @return bool

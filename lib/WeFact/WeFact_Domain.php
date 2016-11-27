@@ -693,6 +693,278 @@ class WeFact_Domain extends WeFact_Model
     }
 
     /**
+     * @param string $date   2016-09-01 <optional>
+     * @param string $reason <optional>
+     * @throws Exception
+     * @return bool
+     */
+    public function terminate($date = '', $reason = '')
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+
+        if ($date != '') {
+            $parameters['Date'] = $date;
+        }
+        if ($reason != '') {
+            $parameters['Reason'] = $reason;
+        }
+
+        $response = self::sendRequest(self::getModelName(), 'terminate', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Also set the authKey in object
+     *
+     * @throws Exception
+     * @return string
+     */
+    public function getToken()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+
+        $response = self::sendRequest(self::getModelName(), 'gettoken', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        if (isset($response['domain']['AuthKey']) == false) {
+            return false;
+        }
+        $this->setAuthKey($response['domain']['AuthKey']);
+        return $response['domain']['AuthKey'];
+    }
+
+    /**
+     * @throws Exception
+     * @return bool
+     */
+    public function lock()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+
+        $response = self::sendRequest(self::getModelName(), 'lock', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @throws Exception
+     * @return bool
+     */
+    public function unlock()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+
+        $response = self::sendRequest(self::getModelName(), 'unlock', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Change the nameservers of this domain
+     *
+     * @param string $dns1
+     * @param string $dns2
+     * @param string $dns3 <optional>
+     * @param string $dns1Ip <optional>
+     * @param string $dns2Ip <optional>
+     * @param string $dns3Ip <optional>
+     * @param int    $dnsTemplate <optional>
+     * @throws Exception
+     * @return bool
+     */
+    public function changeNameserver(
+        $dns1,
+        $dns2,
+        $dns3 = '',
+        $dns1Ip = '',
+        $dns2Ip = '',
+        $dns3Ip = '',
+        $dnsTemplate = 0
+    ) {
+        $identifier = $this->getIdentifier();
+        $dnsParams  = array(
+            'Identifier' => $identifier,
+            'DNS1'       => $dns1,
+            'DNS2'       => $dns2,
+        );
+
+        if ($dns3 != '') {
+            $dnsParams['DNS3'] = $dns3;
+        }
+        if ($dns1Ip != '') {
+            $dnsParams['DNS1IP'] = $dns1Ip;
+        }
+        if ($dns2Ip != '') {
+            $dnsParams['DNS2IP'] = $dns2Ip;
+        }
+        if ($dns3Ip != '') {
+            $dnsParams['DNS3IP'] = $dns3Ip;
+        }
+        if ($dnsTemplate != '') {
+            $dnsParams['DNSTemplate'] = $dnsTemplate;
+        }
+
+        $response = self::sendRequest(self::getModelName(), 'changenameserver', $dnsParams);
+
+        if (isset($response['success']) == false) {
+            return false;
+        }
+        if (isset($response['warning']) == false) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Choose if costs should be charged to debtor yes|no. when no input given, the default for TLD applies
+     *
+     * @param string $chargeCosts
+     * @throws Exception
+     * @return bool
+     */
+    public function syncWhois($chargeCosts = '')
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+
+        if ($chargeCosts != '') {
+            $parameters['ChargeCosts'] = $chargeCosts;
+        }
+
+        $response = self::sendRequest(self::getModelName(), 'syncwhois', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Choose if costs should be charged to debtor yes|no. when no input given, the default for TLD applies
+     *
+     * @param string $chargeCosts
+     * @throws Exception
+     * @return bool
+     */
+    public function editWhois($chargeCosts = '')
+    {
+        throw new Exception("Not yet implemented");
+    }
+
+    /**
+     * transfer a domain, uses authkey in object
+     *
+     * @throws Exception
+     * @return bool
+     */
+    public function transfer()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+
+        if ($this->getAuthKey() != '') {
+            $parameters['AuthKey'] = $this->getAuthKey();
+        }
+
+        $response = self::sendRequest(self::getModelName(), 'transfer', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Register this domain
+     *
+     * @throws Exception
+     * @return bool
+     */
+    public function register()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+
+        if ($this->getAuthKey() != '') {
+            $parameters['AuthKey'] = $this->getAuthKey();
+        }
+
+        $response = self::sendRequest(self::getModelName(), 'register', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @throws Exception
+     * @return array
+     */
+    public function listdnstemplates()
+    {
+        $parameters = array(
+            'Identifier' => $this->getIdentifier(),
+        );
+        $response   = self::sendRequest(self::getModelName(), 'listdnstemplates', $parameters);
+
+        if (isset($response['status']) == false) {
+            return false;
+        }
+        if ($response['status'] != 'success') {
+            return false;
+        }
+        if (isset($response['dnstemplates']) == false) {
+            return false;
+        }
+        return $response['dnstemplates'];
+    }
+
+    /**
      * Check whether a domainName is available for registration
      * Null when check failed
      *
@@ -722,35 +994,19 @@ class WeFact_Domain extends WeFact_Model
     }
 
     /**
-     * Change the nameservers of this domain
-     *
-     * @param string $dns1
-     * @param string $dns2
-     * @param string $dns3 <optional>
-     * @return bool
+     * @throws Exception
      */
-    public function changeNameserver($dns1, $dns2, $dns3 = '')
+    public function getdnszone()
     {
-        $identifier = $this->getIdentifier();
-        $dnsParams  = array(
-            'Identifier' => $identifier,
-            'DNS1'       => $dns1,
-            'DNS2'       => $dns2,
-        );
+        throw new Exception("Not yet implemented");
+    }
 
-        if ($dns3 != '') {
-            $dnsParams['DNS3'] = $dns3;
-        }
-
-        $response = self::sendRequest(self::getModelName(), 'changenameserver', $dnsParams);
-
-        if (isset($response['success']) == false) {
-            return false;
-        }
-        if (isset($response['warning']) == false) {
-            return true;
-        }
-        return false;
+    /**
+     * @throws Exception
+     */
+    public function editdnszone()
+    {
+        throw new Exception("Not yet implemented");
     }
 
 }
